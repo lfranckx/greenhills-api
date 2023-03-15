@@ -17,7 +17,6 @@ const saySomething = (req, res) => {
     res.send(content);
 };
 
-
 app.use(morgan("dev"));
 app.get("/hello", sayHello);
 app.get("/say/:greeting", saySomething);
