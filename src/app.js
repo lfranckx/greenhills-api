@@ -1,24 +1,19 @@
+require('dotenv').confid();
 const express = require('express');
-const app = express();
 const morgan = require("morgan");
+const cors = require('cors');
+const helmet = require('helmet');
+const { NODE_ENV } = require('./config');
 
-const sayHello = (req, res) => {
-    console.log(req.query);
-    const name = req.query.name;
-    const content = name ? `Hello, ${name}!` : "Hello!";
-    res.send(content);
-};
+const app = express();
+const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
 
-const saySomething = (req, res) => {
-    const greeting = req.params.greeting;
-    const name = req.query.name;
-  
-    const content = greeting && name ? `${greeting}, ${name}!` : `${greeting}!`;
-    res.send(content);
-};
+app.use(morgan(morganOption));
+app.use(helmet());
+app.use(cors());
 
-app.use(morgan("dev"));
-app.get("/hello", sayHello);
-app.get("/say/:greeting", saySomething);
+app.get('/', (req, res) => {
+    res.send('Boilerplate working!');
+})
 
 module.exports = app;
