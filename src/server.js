@@ -1,5 +1,15 @@
-const { PORT = 4000 } = process.env;
-const app = require("./app");
+const app = require('./app');
+const knex = require('knex');
+const { PORT, DATABASE_URL } = require('./config');
 
-const listener = () => console.log(`Listening on Port ${PORT}!`);
-app.listen(PORT, listener);
+const db = knex({
+    client: 'pg',
+    connection: DATABASE_URL
+});
+
+app.set('db', db);
+
+app.listen(PORT, () => {
+    console.log(`Server listening at http://localhost:${PORT}`);
+    console.log(`DB_URL: ${DATABASE_URL}`)
+});
