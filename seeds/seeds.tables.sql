@@ -6,11 +6,6 @@ TRUNCATE
     users
     RESTART IDENTITY CASCADE;
 
-INSERT INTO users (username, password)
-VALUES
-    ('golf_greenhills', 'Par71'),
-    ('golf_woussickett', 'Par71');
-
 INSERT INTO locations (name, address)
 VALUES
     ('Green Hills', '1959 South Main Street, Clyde, Ohio 43410'),
@@ -31,5 +26,10 @@ INSERT INTO employees (name, score, location_id)
         ('Ryan Kurt', 0, 2),
         ('Josh Grimm', 0, 2),
         ('BK Kalies', 0, 2);
+
+INSERT INTO users (username, password)
+VALUES
+    ('golf_greenhills', 'Par71'),
+    ('golf_woussickett', 'Par71');
 
 COMMIT;
