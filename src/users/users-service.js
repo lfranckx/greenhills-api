@@ -54,8 +54,10 @@ const UsersService = {
         return {
             id: userData.id,
             username: xss(userData.username),
-            password: xss(userData.pass)
-
+            password: xss(userData.password),
+            date_created: new Date(userData.date_created)
         }
     }
 }
+
+module.exports = UsersService;
