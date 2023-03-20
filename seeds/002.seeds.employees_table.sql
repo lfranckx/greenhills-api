@@ -2,7 +2,6 @@ BEGIN;
 
 TRUNCATE
     employees,
-    users
     RESTART IDENTITY CASCADE;
 
 INSERT INTO employees (name, score, location_id)
@@ -20,10 +19,5 @@ INSERT INTO employees (name, score, location_id)
         ('Ryan Kurt', 0, 2),
         ('Josh Grimm', 0, 2),
         ('BK Kalies', 0, 2);
-
-INSERT INTO users (username, password)
-VALUES
-    ('golf_greenhills', 'Par71'),
-    ('golf_woussickett', 'Par71');
 
 COMMIT;
