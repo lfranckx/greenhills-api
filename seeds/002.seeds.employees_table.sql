@@ -1,7 +1,7 @@
 BEGIN;
 
 TRUNCATE
-    employees,
+    employees
     RESTART IDENTITY CASCADE;
 
 INSERT INTO employees (name, score, location_id)
