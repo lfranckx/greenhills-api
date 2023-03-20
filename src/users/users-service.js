@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const xss = require('xss');
 const Treeize = require('treeize');
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z]).{8,}/;
+const REQEX_UPPER_LOWER_NUMBER = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*)$/;
 
 const UsersService = {
     hasUserWithUsername(db, username) {
@@ -18,8 +19,8 @@ const UsersService = {
             .then(([user]) => user);
     },
     validatePassword(password) {
-        if (password.length < 8) {
-            return 'Password must be longer than 8 characters';
+        if (password.length < 4) {
+            return 'Password must be longer than 4 characters';
         }
         if (password.length > 72) {
             return 'Password must be less than 72 characters';
@@ -27,7 +28,7 @@ const UsersService = {
         if (password.startsWith(' ') || password.endsWith(' ')) {
             return 'Password cannot start or end with an empty space'
         }
-        if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
+        if (!REQEX_UPPER_LOWER_NUMBER.test(password)) {
             return 'Password must contain at least one uppercase, one lowercase, and one number';
         }
         return null;
