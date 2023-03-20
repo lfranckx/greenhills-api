@@ -9,6 +9,8 @@ const app = express();
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
 
 const errorHandler = require('./errorHandler');
+const authRouter = require('./auth/auth-router');
+const usersRouter = require('./users/users-router');
 
 app.use(morgan(morganOption));
 app.use(helmet());
@@ -18,7 +20,8 @@ app.get('/', (req, res) => {
     res.send('Boilerplate working!');
 });
 
-
+app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 
 app.use(errorHandler);
 
