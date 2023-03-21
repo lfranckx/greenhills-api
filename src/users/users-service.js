@@ -36,15 +36,18 @@ const UsersService = {
         return null;
     },
     hashPassword(password) {
+        console.log('inside hashPassword()...', password);
         return bcrypt.hash(password, 12);
     },
     getById(knex, id) {
+        console.log('inside getById()...', password);
         return knex('users')
             .select('*')
             .where('id', id)
             .first();
     },
     getByUsername(knex, username) {
+        console.log('inside getByUsername()...', username);
         return knex('users')
             .select('*')
             .where('username', username)
@@ -53,6 +56,7 @@ const UsersService = {
     serializeUser(user) {
         const userTree = new Treeize();
         const userData = userTree.grow([user]).getData()[0];
+        console.log('inside serializeUser() userData...', userData);
 
         return {
             id: userData.id,
