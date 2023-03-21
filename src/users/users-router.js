@@ -5,8 +5,19 @@ const UsersService = require('./users-service');
 const path = require('path');
 
 usersRouter
-    .post('/', jsonParser, (req, res, next) => {
+    .post('/', jsonParser, (req, res, next) =>  {
         const { username, password, location_id } = req.body;
+        console.log('req.body...', req.body);
+        console.log('username...', username);
+        console.log('password...', password);
+        console.log('typeof password...', typeof password);
+        console.log('location_id...', location_id);
+
+        // Check that password is a string
+        if (typeof password !== 'string') {
+            return res.status(400).json({ error: 'Password must be a string' });
+        }
+
         for (const field of ['username', 'password', 'location_id'])
             if (!req.body[field])
             return res.status(400).json({
@@ -14,7 +25,7 @@ usersRouter
             });
 
         const passwordError = UsersService.validatePassword(password);
-        if (passwordError)
+        if (passwordError) 
             return res.status(400).json({ error: passwordError });
 
         UsersService.hasUserWithUsername(
@@ -35,7 +46,7 @@ usersRouter
                 }
 
                 return UsersService.insertUser(
-                    req.app.get('db'), 
+                    req.app.get('db'),
                     newUser
                 )
                 .then(user => {
@@ -46,7 +57,7 @@ usersRouter
                 });
             });
         })
-        .catch(next());
+        .catch(next);
     });
 
 module.exports = usersRouter;

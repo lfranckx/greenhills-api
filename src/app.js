@@ -17,7 +17,7 @@ app.use(helmet());
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.send('Boilerplat Working!');
+    res.send('Boilerplate Working!');
 });
 
 app.use('/auth', authRouter);

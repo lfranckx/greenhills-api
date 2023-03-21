@@ -5,12 +5,14 @@ const REQEX_UPPER_LOWER_NUMBER = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*)$/;
 
 const UsersService = {
     hasUserWithUsername(db, username) {
+        console.log('inside hasUserWithUsername()...', username);
         return db('users')
             .where({ username })
             .first()
             .then(user => !!user);
     },
     insertUser(db, newUser) {
+        console.log('inside insertUser()...', newUser);
         return db
             .insert(newUser)
             .into('users')
@@ -18,6 +20,7 @@ const UsersService = {
             .then(([user]) => user);
     },
     validatePassword(password) {
+        console.log('inside validatePassword()...', password);
         if (password.length < 4) {
             return 'Password must be longer than 4 characters';
         }
@@ -55,6 +58,7 @@ const UsersService = {
             id: userData.id,
             username: xss(userData.username),
             password: xss(userData.password),
+            location_id: xss(userData.location_id),
             date_created: new Date(userData.date_created)
         }
     }
