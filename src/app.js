@@ -20,8 +20,8 @@ app.get('/', (req, res) => {
     res.send('Boilerplate working!');
 });
 
-app.use('/api/auth', authRouter);
-app.use('/api/users', usersRouter);
+app.use('/auth', authRouter);
+app.use('/users', usersRouter);
 
 app.use(errorHandler);
 

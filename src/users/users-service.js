@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const xss = require('xss');
 const Treeize = require('treeize');
-// const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z]).{8,}/;
 const REQEX_UPPER_LOWER_NUMBER = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*)$/;
 
 const UsersService = {
