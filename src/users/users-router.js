@@ -6,9 +6,9 @@ const path = require('path');
 
 usersRouter
     .post('/', jsonParser, (req, res, next) => {
-        console.log('req.body:::', req.body);
+        console.log('req.body...', req.body);
 
-        console.log('req.body.password:::', req.body.password);
+        console.log('req.body.password...', req.body.password);
         const { username, password, location_id } = req.body;
         for (const field of ['username', 'password', 'location_id'])
             if (!req.body[field])
@@ -25,7 +25,7 @@ usersRouter
             username
         )
         .then(hasUserWithUsername => {
-            console.log("inside hasUserWithUsername:::", hasUserWithUsername);
+            console.log("inside hasUserWithUsername...", hasUserWithUsername);
             if (hasUserWithUsername)
                 return res.status(400).json({ error: 'Username is already taken' });
 
