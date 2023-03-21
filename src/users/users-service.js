@@ -5,7 +5,6 @@ const REQEX_UPPER_LOWER_NUMBER = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*)$/;
 
 const UsersService = {
     hasUserWithUsername(db, username) {
-        console.log('hasUserWithUsername(username):::', username);
         return db('users')
             .where({ username })
             .first()
@@ -19,7 +18,6 @@ const UsersService = {
             .then(([user]) => user);
     },
     validatePassword(password) {
-        console.log('validatePassword():::', password);
         if (password.length < 4) {
             return 'Password must be longer than 4 characters';
         }
@@ -35,7 +33,6 @@ const UsersService = {
         return null;
     },
     hashPassword(password) {
-        console.log('hashPassword():::', password);
         return bcrypt.hash(password, 12);
     },
     getById(knex, id) {
