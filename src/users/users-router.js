@@ -7,16 +7,6 @@ const path = require('path');
 usersRouter
     .post('/', jsonParser, (req, res, next) =>  {
         const { username, password, location_id } = req.body;
-        console.log('req.body...', req.body);
-        console.log('username...', username);
-        console.log('password...', password);
-        console.log('typeof password...', typeof password);
-        console.log('location_id...', location_id);
-
-        // Check that password is a string
-        if (typeof password !== 'string') {
-            return res.status(400).json({ error: 'Password must be a string' });
-        }
 
         for (const field of ['username', 'password', 'location_id'])
             if (!req.body[field])
@@ -26,7 +16,6 @@ usersRouter
 
         const passwordError = UsersService.validatePassword(password);
         if (passwordError) {
-            console.log('if passwordError...', passwordError);
             return res.status(400).json({ error: passwordError });
         }
         UsersService.hasUserWithUsername(
