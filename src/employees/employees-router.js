@@ -160,3 +160,5 @@ async function checkEmployeeExists(req, res, next) {
         next(error);
     }
 }
+
+module.exports = employeesRouter;

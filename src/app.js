@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/employees', employeesRouter);
 
 app.use(errorHandler);
 
