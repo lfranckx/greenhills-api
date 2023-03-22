@@ -11,6 +11,7 @@ const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
 const errorHandler = require('./errorHandler');
 const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router');
+const employeesRouter = require('./employees/employees-router');
 
 app.use(morgan(morganOption));
 app.use(helmet());
