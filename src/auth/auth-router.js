@@ -41,8 +41,10 @@ authRouter
                     const payload = { user_id: dbUser.id };
                     console.log('sub, payload...', sub, payload);
                     console.log('authToken...', AuthService.createJwt(sub, payload));
+                    console.log('location_id...', dbUser.location_id);
                     res.send({
-                        authToken: AuthService.createJwt(sub, payload)
+                        authToken: AuthService.createJwt(sub, payload),
+                        location_id: dbUser.location_id
                     });
                 });
         })
@@ -55,6 +57,7 @@ authRouter
         const payload = { user_id: req.user.id };
         res.send({
             authToken: AuthService.createJwt(sub, payload),
+            location_id: req.user.location_id
         });
     });
 

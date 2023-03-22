@@ -10,15 +10,14 @@ const EmployeesService = {
         return knex
             .from('employees')
             .select('*')
-            .where('location_id', location_id)
-            .first();
+            .where('location_id', location_id);
     },
     getById(knex, id) {
         return knex
             .from('employees')
             .select('*')
             .where('id', id)
-            first();
+            .first();
     },
     insertEmployee(db, newEmployee) {
         return db

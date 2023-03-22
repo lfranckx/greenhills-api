@@ -70,9 +70,9 @@ employeesRouter
 employeesRouter
     .route('/location/:location_id')
     .all(checkLocationExists)
-    .get(requireAuth, (req, res) => {
-        console.log('req body...', req.body);
-        const { location_id } = req.body;
+    .get(requireAuth, (req, res, next) => {
+        console.log('req params...', req.params);
+        const { location_id } = req.params;
         EmployeesService.getAllEmployeesByLocation(req.app.get('db'), location_id)
         .then(employees => {
             console.log('Sending Employees to Serialize...', employees);
@@ -122,10 +122,10 @@ employeesRouter
         .catch(next);
     })
 
-
 async function checkLocationExists(req, res, next) {
+    console.log('checkLocationExists req.params...', req.params);
     try {
-        const location = await EmployeesService.getByLocation(
+        const location = await EmployeesService.getAllEmployeesByLocation(
             req.app.get('db'),
             req.params.location_id
         );
