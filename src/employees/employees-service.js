@@ -3,33 +3,39 @@ const Treeize = require('treeize');
 
 const EmployeesService = {
     getAllEmployees(knex) {
-        return knex.select('*').from('employees');
-    },
-    getAllEmployeesByLocation(knex, location_id) {
-        console.log('getting all employees by location...', location_id);
         return knex
             .from('employees')
-            .select('*')
+            .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created');
+    },
+    getAllEmployeesByLocation(knex, location_id) {
+        return knex
+            .from('employees')
+            .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')
             .where('location_id', location_id);
     },
     getById(knex, id) {
         return knex
             .from('employees')
-            .select('*')
+            .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')
             .where('id', id)
             .first();
     },
     insertEmployee(db, newEmployee) {
+        const uuid = require('uuid').v4();
+        const employeeWithUuid = { ...newEmployee, uuid };
         return db
-            .insert(newEmployee)
+            .insert(employeeWithUuid)
             .into('employees')
             .returning('*')
             .then(([employee]) => employee);
     },
     updateEmployee(knex, id, newEmployeeFields) {
+        console.log('running updateEmployee...', `employee id: ${id}`, `newEmployeeFields: ${newEmployeeFields}`);
+        const uuid = require('uuid').v4();
+        const employeeWithUuid = { ...newEmployeeFields, uuid };
         return knex('employees')
             .where({ id })
-            .update(newEmployeeFields);
+            .update(employeeWithUuid);
     },
     deleteEmployee(knex, id) {
         return knex('employees')
