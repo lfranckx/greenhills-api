@@ -17,7 +17,7 @@ employeesRouter
         })
         .catch(next);
     })
-    .post('/', jsonParser, (req, res, next) => {
+    .post(jsonParser, (req, res, next) => {
         const { name, location_id, score, password } = req.body;
         const newEmployee = {
             name: name,
