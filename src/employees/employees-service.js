@@ -6,6 +6,7 @@ const EmployeesService = {
         return knex.select('*').from('employees');
     },
     getAllEmployeesByLocation(knex, location_id) {
+        console.log('getting all employees by location...', location_id);
         return knex
             .from('employees')
             .select('*')
@@ -37,12 +38,15 @@ const EmployeesService = {
             .delete();
     },
     serializeEmployees(employees) {
+        console.log('running serializeEmployees()...', employees);
         return employees.map(this.serializeEmployee);
     },
     serializeEmployee(employee) {
         const employeeTree = new Treeize();
         const employeeData = employeeTree.grow([employee]).getData()[0];
 
+        console.log('Serializing Employee...', employee);
+        console.log('employeeData...', employeeData);
         return {
             id: employeeData.id,
             name: xss(employeeData.name),

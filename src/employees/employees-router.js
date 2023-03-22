@@ -9,7 +9,8 @@ employeesRouter
     .get((req, res, next) => {
         EmployeesService.getAllEmployees(req.app.get('db'))
         .then(employees => {
-            res.json();
+            console.log('Sending Employees to Serialize...', employees);
+            res.json(EmployeesService.serializeEmployees(employees));
         })
         .catch(next);
     })
