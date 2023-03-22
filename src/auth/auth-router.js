@@ -17,35 +17,36 @@ authRouter
                 return res.status(400).json({
                     error: `Missing ${key} in request body`
                 });
+
         AuthService.getUserWithUsername(
             req.app.get('db'),
             loginUser.username
         )
-            .then(dbUser => {
-                console.log('dbUser...', dbUser);
-                if (!dbUser)
+        .then(dbUser => {
+            console.log('dbUser...', dbUser);
+            if (!dbUser)
+                return res.status(400).json({
+                    error: 'Incorrect username or password'
+                });
+            
+            return AuthService.comparePasswords(loginUser.password, dbUser.password)
+                .then(compareMatch => {
+                    console.log('compareMatch...', compareMatch);
+                    if (!compareMatch)
                     return res.status(400).json({
-                        error: 'Incorrect username or password'
+                        error: 'Incorrect username or password',
                     });
-                
-                    return AuthService.comparePasswords(loginUser.password, dbUser.password)
-                        .then(compareMatch => {
-                            console.log('compareMatch...', compareMatch);
-                            if (!compareMatch)
-                            return res.status(400).json({
-                                error: 'Incorrect username or password',
-                            });
 
-                            const sub = dbUser.username;
-                            const payload = { user_id: dbUser.id };
-                            console.log('sub, payload...', sub, payload);
-                            console.log('authToken...', AuthService.createJwt(sub, payload));
-                            res.send({
-                                authToken: AuthService.createJwt(sub, payload)
-                            });
-                        });
-            })
-            .catch(next);
+                    const sub = dbUser.username;
+                    const payload = { user_id: dbUser.id };
+                    console.log('sub, payload...', sub, payload);
+                    console.log('authToken...', AuthService.createJwt(sub, payload));
+                    res.send({
+                        authToken: AuthService.createJwt(sub, payload)
+                    });
+                });
+        })
+        .catch(next);
     });
 
 authRouter

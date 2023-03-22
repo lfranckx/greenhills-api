@@ -13,11 +13,11 @@ const EmployeesService = {
             .where('location_id', location_id)
             .first();
     },
-    getByEmployeeName(knex, name) {
+    getById(knex, id) {
         return knex
             .from('employees')
             .select('*')
-            .where('name', name)
+            .where('id', id)
             first();
     },
     insertEmployee(db, newEmployee) {
