@@ -99,29 +99,53 @@ employeesRouter
             .catch(next);
     })
     .patch(requireAuth, jsonParser, (req, res, next) => {
-        const { id, name, score, location_id } = req.body;
-        const employeeToUpdate = { id, name, score, location_id };
-        const numOfValues = Object.values(employeeToUpdate).filter(Boolean).length;
+        const { id, name, score, location_id, password } = req.body;
 
-        if (numOfValues === 0)
-            return (res.status(400).json({
-                error: {
-                    message: `Request body must contain id, name, score, or location_id`
-                }
-            }));
-
-        console.log('Updating Employee ID...', id);
-        console.log('New Employee Data', employeeToUpdate);
-
-        EmployeesService.updateEmployee(
+        console.log('req password...', password);
+        console.log('req user...', req.user);
+        AuthService.getUserWithUsername(
             req.app.get('db'),
-            id,
-            employeeToUpdate
+            req.user.username
         )
-        .then(numRowsAffected => {
-            res.json(numRowsAffected).status(204).end();
+        .then(dbUser => {
+            console.log('dbUser...', dbUser);
+            if (!dbUser)
+                return res.status(400).json({
+                    error: 'Username not found'
+                });
+            
+            return AuthService.comparePasswords(password, dbUser.password)
+            .then(compareMatch => {
+                console.log('compareMatch...', compareMatch);
+                if (!compareMatch)
+                    return res.status(400).json({
+                        error: 'Incorrect password',
+                    });
+                
+                const employeeToUpdate = { id, name, score, location_id };
+                const numOfValues = Object.values(employeeToUpdate).filter(Boolean).length;
+                if (numOfValues === 0)
+                    return (res.status(400).json({
+                        error: {
+                            message: `Request body must contain id, name, score, or location_id`
+                        }
+                    }));
+        
+                console.log('Updating Employee by ID...', id);
+                console.log('employeeToUpdate data...', employeeToUpdate);
+        
+                EmployeesService.updateEmployee(
+                    req.app.get('db'),
+                    id,
+                    employeeToUpdate
+                )
+                .then(numRowsAffected => {
+                    res.json(numRowsAffected).status(204).end();
+                })
+                .catch(next);
+            });
         })
-        .catch(next);
+        .catch(next)
     })
     .delete(requireAuth, jsonParser, (req, res, next) => {
         console.log('Deleting Employee by Id...', req.params.id);
