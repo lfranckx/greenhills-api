@@ -3,11 +3,13 @@ const Treeize = require('treeize');
 
 const EmployeesService = {
     getAllEmployees(knex) {
+        console.log('getAllEmployees()...');
         return knex
             .from('employees')
             .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created');
     },
     getAllEmployeesByLocation(knex, location_id) {
+        console.log('getAllEmployeesByLocation()...', location_id);
         return knex
             .from('employees')
             .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')
@@ -22,6 +24,7 @@ const EmployeesService = {
             .first();
     },
     insertEmployee(db, newEmployee) {
+        console.log('insertEmployee()...', newEmployee);
         const uuid = require('uuid').v4();
         const employeeWithUuid = { ...newEmployee, uuid };
         return db
@@ -39,6 +42,7 @@ const EmployeesService = {
             .update(employeeWithUuid);
     },
     deleteEmployee(knex, id) {
+        console.log('deleteEmployee()...', id);
         return knex('employees')
             .where({ id })
             .delete();

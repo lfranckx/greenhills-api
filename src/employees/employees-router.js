@@ -156,7 +156,6 @@ async function checkLocationExists(req, res, next) {
 }
 
 async function checkEmployeeExists(req, res, next) {
-    console.log('checkEmployeeExists()', req.params);
     try {
         const employee = await EmployeesService.getById(
             req.app.get('db'),
@@ -168,7 +167,6 @@ async function checkEmployeeExists(req, res, next) {
                 error: `This employee does not exist.`
             });
 
-        console.log('checkEmployeeExists response...', res);
         res.employee = employee;
         next();
     } catch (error) {
