@@ -14,6 +14,7 @@ const EmployeesService = {
             .where('location_id', location_id);
     },
     getById(knex, id) {
+        console.log('getById()...', id);
         return knex
             .from('employees')
             .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')

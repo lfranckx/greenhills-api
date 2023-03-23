@@ -81,10 +81,23 @@ employeesRouter
         .catch(next);
     })
 
-// updates to specific employee
+// requests for specific employee
 employeesRouter
     .route('/:id')
     .all(checkEmployeeExists)
+    .get(requireAuth, jsonParser, (req, res, next) => {
+        const { id } = req.params;
+        EmployeesService.getById(req.app.get('db'), id)
+            .then(employee => {
+                if (!employee) {
+                    return res.status(404).json({
+                        error: { message: 'Employee not found' }
+                    });
+                }
+                res.json(EmployeesService.serializeEmployee(employee));
+            })
+            .catch(next);
+    })
     .patch(requireAuth, jsonParser, (req, res, next) => {
         const { id, name, score, location_id } = req.body;
         const employeeToUpdate = { id, name, score, location_id };
@@ -143,6 +156,7 @@ async function checkLocationExists(req, res, next) {
 }
 
 async function checkEmployeeExists(req, res, next) {
+    console.log('checkEmployeeExists()', req.params);
     try {
         const employee = await EmployeesService.getById(
             req.app.get('db'),
@@ -154,6 +168,7 @@ async function checkEmployeeExists(req, res, next) {
                 error: `This employee does not exist.`
             });
 
+        console.log('checkEmployeeExists response...', res);
         res.employee = employee;
         next();
     } catch (error) {
