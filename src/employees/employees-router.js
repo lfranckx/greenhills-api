@@ -19,6 +19,8 @@ employeesRouter
     })
     .post(jsonParser, (req, res, next) => {
         const { name, location_id, score, password } = req.body;
+        console.log('.post route / req body...', req.body);
+
         const newEmployee = {
             name: name,
             score: score,
@@ -50,6 +52,7 @@ employeesRouter
                             error: `Missing ${key} in request body`
                         });
                 
+                console.log('inserting newEmployee...', newEmployee);
                 return EmployeesService.insertEmployee(
                     req.app.get('db'),
                     newEmployee
