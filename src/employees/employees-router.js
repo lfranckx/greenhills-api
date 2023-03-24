@@ -99,10 +99,7 @@ employeesRouter
             .catch(next);
     })
     .patch(requireAuth, jsonParser, (req, res, next) => {
-        const { id, name, score, location_id, password } = req.body;
-
-        console.log('req password...', password);
-        console.log('req user...', req.user);
+        const { id, order_number, name, score, location_id, password } = req.body;
         AuthService.getUserWithUsername(
             req.app.get('db'),
             req.user.username
@@ -121,13 +118,13 @@ employeesRouter
                     return res.status(400).json({
                         error: 'Incorrect password',
                     });
-                
-                const employeeToUpdate = { id, name, score, location_id };
+
+                const employeeToUpdate = { id, order_number, name, score, location_id };
                 const numOfValues = Object.values(employeeToUpdate).filter(Boolean).length;
                 if (numOfValues === 0)
                     return (res.status(400).json({
                         error: {
-                            message: `Request body must contain id, name, score, or location_id`
+                            message: `Request body must contain id, order_number, name, score, or location_id`
                         }
                     }));
         
@@ -180,6 +177,7 @@ async function checkLocationExists(req, res, next) {
 }
 
 async function checkEmployeeExists(req, res, next) {
+    console.log('checekEmployeeExists req.params...', req.params);
     try {
         const employee = await EmployeesService.getById(
             req.app.get('db'),

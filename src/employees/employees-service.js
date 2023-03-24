@@ -6,20 +6,20 @@ const EmployeesService = {
         console.log('getAllEmployees()...');
         return knex
             .from('employees')
-            .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created');
+            .select('id', 'order_number', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created');
     },
     getAllEmployeesByLocation(knex, location_id) {
         console.log('getAllEmployeesByLocation()...', location_id);
         return knex
             .from('employees')
-            .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')
+            .select('id', 'order_number', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')
             .where('location_id', location_id);
     },
     getById(knex, id) {
         console.log('getById()...', id);
         return knex
             .from('employees')
-            .select('id', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')
+            .select('id', 'order_number', 'name', knex.raw('COALESCE(score, 0) as score'), 'location_id', 'date_created')
             .where('id', id)
             .first();
     },
@@ -59,6 +59,7 @@ const EmployeesService = {
         console.log('employeeData...', employeeData);
         return {
             id: employeeData.id,
+            order_number: employeeData.order_number,
             name: xss(employeeData.name),
             score: xss(employeeData.score),
             location_id: xss(employeeData.location_id),
