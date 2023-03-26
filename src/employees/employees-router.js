@@ -74,7 +74,7 @@ employeesRouter
     .route('/location/:location_id')
     .all(checkLocationExists)
     .get(requireAuth, (req, res, next) => {
-        console.log('req params...', req.params);
+        console.log('route /location/:location_id - req.params...', req.params);
         const { location_id } = req.params;
         EmployeesService.getAllEmployeesByLocation(req.app.get('db'), location_id)
         .then(employees => {
@@ -82,9 +82,9 @@ employeesRouter
             res.json(EmployeesService.serializeEmployees(employees));
         })
         .catch(next);
-    })
+    });
 
-// requests for specific employee
+// requests for employee by id
 employeesRouter
     .route('/:id')
     .all(checkEmployeeExists)
@@ -94,7 +94,7 @@ employeesRouter
             .then(employee => {
                 if (!employee) {
                     return res.status(404).json({
-                        error: { message: 'Employee not found' }
+                        error: { message: 'Employee was not found' }
                     });
                 }
                 res.json(EmployeesService.serializeEmployee(employee));
@@ -157,7 +157,7 @@ employeesRouter
             res.json(numRowsAffected).status(204).end();
         })
         .catch(next);
-    })
+    });
 
 async function checkLocationExists(req, res, next) {
     console.log('checkLocationExists req.params...', req.params);

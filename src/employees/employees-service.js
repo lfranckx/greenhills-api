@@ -64,7 +64,7 @@ const EmployeesService = {
             score: xss(employeeData.score),
             location_id: xss(employeeData.location_id),
             date_created: xss(employeeData.date_created)
-        }
+        };
     }
 };
 
