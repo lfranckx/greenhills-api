@@ -43,7 +43,7 @@ ticketsRouter
             const serializedTickets = tickets.map(ticket => TicketsService.serializeTicket(ticket));
             res
                 .status(201)
-                .location(path.posix.join(req.originalUrl, `/${ticket.id}`))
+                .location(path.posix.join(req.originalUrl, `/${serializedTickets[0].id}`))
                 .json(serializedTickets);
         })
         .catch(next);
