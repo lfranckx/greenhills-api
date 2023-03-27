@@ -12,6 +12,7 @@ const errorHandler = require('./errorHandler');
 const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router');
 const employeesRouter = require('./employees/employees-router');
+const ticketsRouter = require('./tickets/tickets-router');
 
 app.use(morgan(morganOption));
 app.use(helmet());
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/employees', employeesRouter);
+app.use('/tickets', ticketsRouter)
 
 app.use(errorHandler);
 

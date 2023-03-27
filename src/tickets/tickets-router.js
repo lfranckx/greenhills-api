@@ -43,6 +43,7 @@ ticketsRouter
             const serializedTickets = tickets.map(ticket => TicketsService.serializeTicket(ticket));
             res
                 .status(201)
+                .location(path.posix.join(req.originalUrl, `/${ticket.id}`))
                 .json(serializedTickets);
         })
         .catch(next);
