@@ -4,7 +4,6 @@ const ticketsRouter = express.Router();
 const TicketsService = require('./tickets-service');
 const path = require('path');
 const { requireAuth } = require('../middleware/jwt-auth');
-const AuthService = require('../auth/auth-service');
 
 ticketsRouter
     .route('/')
