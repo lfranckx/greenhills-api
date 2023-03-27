@@ -27,7 +27,7 @@ const TicketsService = {
         console.log('running insertTicket()...', newTicket);
         return db
             .insert(newTicket)
-            .into('ticket')
+            .into('tickets')
             .returning('*')
             .then(([ticket]) => ticket);
     },

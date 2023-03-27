@@ -17,7 +17,7 @@ ticketsRouter
         .catch(next);
     })
     .post(jsonParser, (req, res, next) => {
-        const { custom_message, employee_name, employee_id, location_id } = req.body;
+        const { custom_message, employee_name, employee_id, location_id, numOfTickets } = req.body;
         console.log('.post route / req body...', req.body);
 
         const newTicket = { custom_message, employee_name, employee_id, location_id };
@@ -28,16 +28,22 @@ ticketsRouter
                 error: `Missing ${key} in request body`
             });
 
-        console.log('inserting newTicket...', newTicket);
-        return TicketsService.insertTicket(
-            req.app.get('db'),
-            newTicket
-        )
-        .then(ticket => {
+        console.log(`Inserting ${numOfTickets} new tickets...`, newTicket);
+        // iterate over numOfTickets and insert newTicket each time
+        const promises = [];
+        for (let i = 0; i < numOfTickets; i++) {
+            promises.push(TicketsService.insertTicket(
+                req.app.get('db'),
+                newTicket
+            ));
+        }
+        
+        Promise.all(promises)
+        .then(tickets => {
+            const serializedTickets = tickets.map(ticket => TicketsService.serializeTicket(ticket));
             res
                 .status(201)
-                .location(path.posix.join(req.originalUrl, `/${ticket.id}`))
-                .json(TicketsService.serializeTicket(ticket));
+                .json(serializedTickets);
         })
         .catch(next);
     });
