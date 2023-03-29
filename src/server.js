@@ -12,6 +12,11 @@ const db = knex({
     }
 });
 
+// Test database connection
+db.select(1)
+  .then(() => console.log('Database connection successful'))
+  .catch(error => console.error('Database connection error', error));
+
 app.set('db', db);
 
 app.listen(PORT, () => {
