@@ -12,15 +12,12 @@ employeesRouter
     .get((req, res, next) => {
         EmployeesService.getAllEmployees(req.app.get('db'))
         .then(employees => {
-            console.log('Sending Employees to Serialize...', employees);
             res.json(EmployeesService.serializeEmployees(employees));
         })
         .catch(next);
     })
     .post(jsonParser, (req, res, next) => {
         const { name, location_id, score, password } = req.body;
-        console.log('.post route / req body...', req.body);
-
         const newEmployee = {
             name: name,
             score: score,
@@ -32,7 +29,6 @@ employeesRouter
             req.user.username
         )
         .then(dbUser => {
-            console.log('dbUser...', dbUser);
             if (!dbUser)
                 return res.status(400).json({
                     error: 'Username not found'
@@ -40,7 +36,6 @@ employeesRouter
             
             return AuthService.comparePasswords(password, dbUser.password)
             .then(compareMatch => {
-                console.log('compareMatch...', compareMatch);
                 if (!compareMatch)
                     return res.status(400).json({
                         error: 'Incorrect password',
@@ -52,7 +47,6 @@ employeesRouter
                             error: `Missing ${key} in request body`
                         });
                 
-                console.log('inserting newEmployee...', newEmployee);
                 return EmployeesService.insertEmployee(
                     req.app.get('db'),
                     newEmployee
@@ -74,11 +68,9 @@ employeesRouter
     .route('/location/:location_id')
     .all(checkLocationExists)
     .get(requireAuth, (req, res, next) => {
-        console.log('route /location/:location_id - req.params...', req.params);
         const { location_id } = req.params;
         EmployeesService.getAllEmployeesByLocation(req.app.get('db'), location_id)
         .then(employees => {
-            console.log('Sending Employees to Serialize...', employees);
             res.json(EmployeesService.serializeEmployees(employees));
         })
         .catch(next);
@@ -108,7 +100,6 @@ employeesRouter
             req.user.username
         )
         .then(dbUser => {
-            console.log('dbUser...', dbUser);
             if (!dbUser)
                 return res.status(400).json({
                     error: 'Username not found'
@@ -116,7 +107,6 @@ employeesRouter
             
             return AuthService.comparePasswords(password, dbUser.password)
             .then(compareMatch => {
-                console.log('compareMatch...', compareMatch);
                 if (!compareMatch)
                     return res.status(400).json({
                         error: 'Incorrect password',
@@ -130,9 +120,6 @@ employeesRouter
                             message: `Request body must contain id, order_number, name, score, or location_id`
                         }
                     }));
-        
-                console.log('Updating Employee by ID...', id);
-                console.log('employeeToUpdate data...', employeeToUpdate);
         
                 EmployeesService.updateEmployee(
                     req.app.get('db'),
@@ -148,7 +135,6 @@ employeesRouter
         .catch(next)
     })
     .delete(requireAuth, jsonParser, (req, res, next) => {
-        console.log('Deleting Employee by Id...', req.params.id);
         EmployeesService.deleteEmployee(
             req.app.get('db'),
             req.params.id
@@ -160,7 +146,6 @@ employeesRouter
     });
 
 async function checkLocationExists(req, res, next) {
-    console.log('checkLocationExists req.params...', req.params);
     try {
         const location = await EmployeesService.getAllEmployeesByLocation(
             req.app.get('db'),
@@ -180,7 +165,6 @@ async function checkLocationExists(req, res, next) {
 }
 
 async function checkEmployeeExists(req, res, next) {
-    console.log('checekEmployeeExists req.params...', req.params);
     try {
         const employee = await EmployeesService.getById(
             req.app.get('db'),

@@ -11,14 +11,12 @@ ticketsRouter
     .get((req, res, next) => {
         TicketsService.getAllTickets(req.app.get('db'))
         .then(tickets => {
-            console.log('Sending all tickets to serialize', tickets);
             res.json(TicketsService.serializeTickets(tickets))
         })
         .catch(next);
     })
     .post(jsonParser, (req, res, next) => {
         const { custom_message, employee_name, employee_id, location_id, numOfTickets } = req.body;
-        console.log('.post route / req body...', req.body);
 
         const newTicket = { custom_message, employee_name, employee_id, location_id };
         
@@ -28,7 +26,6 @@ ticketsRouter
                 error: `Missing ${key} in request body`
             });
 
-        console.log(`Inserting ${numOfTickets} new tickets...`, newTicket);
         // iterate over numOfTickets and insert newTicket each time
         const promises = [];
         for (let i = 0; i < numOfTickets; i++) {
@@ -57,8 +54,6 @@ ticketsRouter
         const { from_date, to_date } = req.body;
         const locationId = req.params.location_id;
 
-        console.log('route /location/:location_id - request body...', req.body);
-
         TicketsService.getTicketsByDateRange(
             req.app.get('db'),
             locationId,
@@ -66,7 +61,6 @@ ticketsRouter
             to_date
         )
         .then(tickets => {
-            console.log('Sending tickets to serialize...', tickets);
             res.json(TicketsService.serializeTickets(tickets));
         })
         .catch(next);
@@ -101,9 +95,6 @@ ticketsRouter
                 }
             }));
 
-        console.log(`Updating Ticket by id...`, id);
-        console.log(`ticketToUpdate...`, ticketToUpdate);
-
         TicketsService.updateTicket(
             req.app.get('db'),
             id,
@@ -115,7 +106,6 @@ ticketsRouter
         .catch(next);
     })
     .delete(requireAuth, jsonParser, (req, res, next) => {       
-        console.log(`Deleting Ticket by id...`, req.params.id); 
         TicketsService.deleteTicket(
             req.app.get('db'),
             req.params.id
@@ -127,7 +117,6 @@ ticketsRouter
     });
 
 async function checkLocationExists(req, res, next) {
-    console.log('checkLocationExists req.params...', req.params);
     try {
         const location = await TicketsService.getAllTicketsByLocation(
             req.app.get('db'),
@@ -147,7 +136,6 @@ async function checkLocationExists(req, res, next) {
 }
 
 async function checkTicketExists(req, res, next) {
-    console.log('checkTicketExists req.params...', req.params);
     try {
         const ticket = await TicketsService.getById(
             req.app.get('db'),

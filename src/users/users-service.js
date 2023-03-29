@@ -5,14 +5,12 @@ const REQEX_UPPER_LOWER_NUMBER = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*)$/;
 
 const UsersService = {
     hasUserWithUsername(db, username) {
-        console.log('inside hasUserWithUsername()...', username);
         return db('users')
             .where({ username })
             .first()
             .then(user => !!user);
     },
     insertUser(db, newUser) {
-        console.log('inside insertUser()...', newUser);
         return db
             .insert(newUser)
             .into('users')
@@ -20,7 +18,6 @@ const UsersService = {
             .then(([user]) => user);
     },
     validatePassword(password) {
-        console.log('inside validatePassword()...', password);
         if (password.length < 4) {
             return 'Password must be longer than 4 characters';
         }
@@ -36,18 +33,15 @@ const UsersService = {
         return null;
     },
     hashPassword(password) {
-        console.log('inside hashPassword()...', password);
         return bcrypt.hash(password, 12);
     },
     getById(knex, id) {
-        console.log('inside getById()...', password);
         return knex('users')
             .select('*')
             .where('id', id)
             .first();
     },
     getByUsername(knex, username) {
-        console.log('inside getByUsername()...', username);
         return knex('users')
             .select('*')
             .where('username', username)
@@ -56,8 +50,6 @@ const UsersService = {
     serializeUser(user) {
         const userTree = new Treeize();
         const userData = userTree.grow([user]).getData()[0];
-        console.log('inside serializeUser() userData...', userData);
-
         return {
             id: userData.id,
             username: xss(userData.username),
