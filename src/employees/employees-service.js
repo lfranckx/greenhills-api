@@ -39,7 +39,9 @@ const EmployeesService = {
         const employeeWithUuid = { ...newEmployeeFields, uuid };
         return knex('employees')
             .where({ id })
-            .update(employeeWithUuid);
+            .update(employeeWithUuid)
+            .returning('*')
+            .then(rows => rows[0]);
     },
     deleteEmployee(knex, id) {
         console.log('deleteEmployee()...', id);

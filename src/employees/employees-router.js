@@ -139,8 +139,8 @@ employeesRouter
                     id,
                     employeeToUpdate
                 )
-                .then(numRowsAffected => {
-                    res.json(numRowsAffected).status(204).end();
+                .then(updatedEmployee => {
+                    res.json(updatedEmployee).status(200);
                 })
                 .catch(next);
             });
