@@ -6,7 +6,9 @@ TRUNCATE
 
 INSERT INTO users (username, password, location_id)
 VALUES
-    ('test_greenhills', '$2a$12$RCqiK9BWqDMdiMT7ztQrdOgez2VFifUD8YNbGMkbGhAoEIjFLBTxK', 1),
-    ('test_woussickett', '$2a$12$RCqiK9BWqDMdiMT7ztQrdOgez2VFifUD8YNbGMkbGhAoEIjFLBTxK', 2);
+    ('test_greenhills', '$2a$12$WxamwYprWw1eiRWOd0g3leQzshomy.OFeo3AHtozPcsyXKbk3D4R2', 1),
+    ('test_woussickett', '$2a$12$WxamwYprWw1eiRWOd0g3leQzshomy.OFeo3AHtozPcsyXKbk3D4R2', 2);
 
-    -- hashed password $2a$12$RCqiK9BWqDMdiMT7ztQrdOgez2VFifUD8YNbGMkbGhAoEIjFLBTxK
+COMMIT;
+    
+-- hashed password $2a$12$WxamwYprWw1eiRWOd0g3leQzshomy.OFeo3AHtozPcsyXKbk3D4R2
