@@ -13,7 +13,16 @@ const TicketsService = {
         return knex
             .from('tickets')
             .select('*')
+            .where('location_id', location_id);
+    },
+    getTicketsByDateRange(knex, location_id, from_date, to_date) {
+        console.log('running getTicketsByDateRange()', location_id, from_date, to_date);
+        return knex
+            .from('tickets')
+            .select('*')
             .where('location_id', location_id)
+            .andWhere('date_created', '>=', from_date)
+            .andWhere('date_created', '<=', to_date);
     },
     getById(knex, id) {
         console.log('running getById()...', id);

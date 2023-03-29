@@ -53,8 +53,23 @@ ticketsRouter
 ticketsRouter
     .route('/location/:location_id')
     .all(checkLocationExists)
-    .get(requireAuth, (res) => {
-        res.json(TicketsService.serializeTicket(res.ticket));
+    .post(requireAuth, jsonParser, (req, res, next) => {
+        const { from_date, to_date } = req.body;
+        const locationId = req.params.location_id;
+
+        console.log('route /location/:location_id - request body...', req.body);
+
+        TicketsService.getTicketsByDateRange(
+            req.app.get('db'),
+            locationId,
+            from_date,
+            to_date
+        )
+        .then(tickets => {
+            console.log('Sending tickets to serialize...', tickets);
+            res.json(TicketsService.serializeTickets(tickets));
+        })
+        .catch(next);
     });
     
 
