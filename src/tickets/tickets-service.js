@@ -33,13 +33,13 @@ const TicketsService = {
             .raw(
                 `
                 INSERT INTO tickets (custom_message, employee_name, employee_id, location_id, date_created)
-                VALUES (?, ?, ?, ?, NOW() AT TIME ZONE 'America/New_York')
+                VALUES (?, ?, ?, ?, NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'America/New_York')
                 RETURNING *
                 `,
                 [newTicket.custom_message, newTicket.employee_name, newTicket.employee_id, newTicket.location_id]
             )
             .then((result) => result.rows[0]);
-    },
+    },    
     updateTicket(knex, id, newTicketFields) {
         return knex('tickets')
             .where({ id })
