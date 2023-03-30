@@ -11,12 +11,12 @@ usersRouter
         for (const field of ['username', 'password', 'location_id'])
             if (!req.body[field])
             return res.status(400).json({
-                error: `Missing ${field} in request body`
+                message: `Missing ${field} in request body`
             });
 
         const passwordError = UsersService.validatePassword(password);
         if (passwordError) {
-            return res.status(400).json({ error: passwordError });
+            return res.status(400).json({ message: passwordError });
         }
         UsersService.hasUserWithUsername(
             req.app.get('db'),
@@ -24,7 +24,7 @@ usersRouter
         )
         .then(hasUserWithUsername => {
             if (hasUserWithUsername)
-                return res.status(400).json({ error: 'Username is already taken' });
+                return res.status(400).json({ message: 'Username is already taken' });
 
             return UsersService.hashPassword(password)
             .then(hashedPassword => {

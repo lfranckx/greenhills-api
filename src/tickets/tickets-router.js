@@ -23,7 +23,7 @@ ticketsRouter
         for (const [key, value] of Object.entries(newTicket))
         if (value == null)
             return res.status(400).json({
-                error: `Missing ${key} in request body`
+                message: `Missing ${key} in request body`
             });
 
         newTicket.date_created = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
@@ -79,7 +79,7 @@ ticketsRouter
         .then(ticket => {
             if (!ticket) {
                 return res.status(404).json({
-                    error: `Ticket was not found`
+                    message: `Ticket was not found`
                 })
             }
             res.json(TicketsService.serializeTicket(ticket));
@@ -92,7 +92,7 @@ ticketsRouter
         const numOfValues = Object.values(ticketToUpdate).filter(Boolean).length;
         if (numOfValues === 0)
             return (res.status(400).json({
-                error: `Request body must contain custom_message, employee_name, employee_id, location_id`
+                message: `Request body must contain custom_message, employee_name, employee_id, location_id`
             }));
 
         TicketsService.updateTicket(
@@ -125,7 +125,7 @@ async function checkLocationExists(req, res, next) {
 
         if (!location)
             return res.status(404).json({
-                error: `This location does not exist.`
+                message: `This location does not exist.`
             });
         
         res.location = location;
@@ -144,7 +144,7 @@ async function checkTicketExists(req, res, next) {
 
         if (!ticket)
             return res.status(404).json({
-                error: `This ticket does not exists.`
+                message: `This ticket does not exists.`
             });
 
         res.ticket = ticket;

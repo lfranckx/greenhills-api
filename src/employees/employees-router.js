@@ -31,20 +31,20 @@ employeesRouter
         .then(dbUser => {
             if (!dbUser)
                 return res.status(400).json({
-                    error: 'Username not found'
+                    message: 'Username not found'
                 });
             
             return AuthService.comparePasswords(password, dbUser.manager_password)
             .then(compareMatch => {
                 if (!compareMatch)
                     return res.status(400).json({
-                        error: 'Incorrect password',
+                        message: 'Incorrect password',
                     });
                 
                 for (const [key, value] of Object.entries(newEmployee))
                     if (value === null)
                         return res.status(400).json({
-                            error: `Missing ${key} in request body`
+                            message: `Missing ${key} in request body`
                         });
                 
                 return EmployeesService.insertEmployee(
@@ -86,7 +86,7 @@ employeesRouter
             .then(employee => {
                 if (!employee) {
                     return res.status(404).json({
-                        error: 'Employee was not found'
+                        message: 'Employee was not found'
                     });
                 }
                 res.json(EmployeesService.serializeEmployee(employee));
@@ -102,21 +102,21 @@ employeesRouter
         .then(dbUser => {
             if (!dbUser)
                 return res.status(400).json({
-                    error: 'Username not found'
+                    message: 'Username not found'
                 });
             
             return AuthService.comparePasswords(password, dbUser.manager_password)
             .then(compareMatch => {
                 if (!compareMatch)
                     return res.status(400).json({
-                        error: 'Incorrect password',
+                        message: 'Incorrect password',
                     });
 
                 const employeeToUpdate = { id, order_number, name, score, location_id };
                 const numOfValues = Object.values(employeeToUpdate).filter(Boolean).length;
                 if (numOfValues === 0)
                     return (res.status(400).json({
-                        error: `Request body must contain id, order_number, name, score, or location_id`
+                        message: `Request body must contain id, order_number, name, score, or location_id`
                     }));
         
                 EmployeesService.updateEmployee(
@@ -152,7 +152,7 @@ async function checkLocationExists(req, res, next) {
 
         if (!location)
             return res.status(404).json({
-                error: `This location does not exist.`
+                message: `This location does not exist.`
             });
         
         res.location = location;
@@ -171,7 +171,7 @@ async function checkEmployeeExists(req, res, next) {
 
         if (!employee)
             return res.status(404).json({
-                error: `This employee does not exist.`
+                message: `This employee does not exist.`
             });
 
         res.employee = employee;
