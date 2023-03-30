@@ -1,6 +1,8 @@
 const app = require('./app');
 const knex = require('knex');
 const { PORT, DATABASE_URL } = require('./config');
+process.env.TZ = 'America/New_York';
+
 
 const db = knex({
   client: 'pg',
