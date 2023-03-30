@@ -79,7 +79,7 @@ ticketsRouter
         .then(ticket => {
             if (!ticket) {
                 return res.status(404).json({
-                    error: { message: `Ticket was not found` }
+                    error: `Ticket was not found`
                 })
             }
             res.json(TicketsService.serializeTicket(ticket));
@@ -92,9 +92,7 @@ ticketsRouter
         const numOfValues = Object.values(ticketToUpdate).filter(Boolean).length;
         if (numOfValues === 0)
             return (res.status(400).json({
-                error: {
-                    message: `Request body must contain custom_message, employee_name, employee_id, location_id`
-                }
+                error: `Request body must contain custom_message, employee_name, employee_id, location_id`
             }));
 
         TicketsService.updateTicket(

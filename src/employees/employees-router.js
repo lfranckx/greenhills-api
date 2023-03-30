@@ -86,7 +86,7 @@ employeesRouter
             .then(employee => {
                 if (!employee) {
                     return res.status(404).json({
-                        error: { message: 'Employee was not found' }
+                        error: 'Employee was not found'
                     });
                 }
                 res.json(EmployeesService.serializeEmployee(employee));
@@ -116,9 +116,7 @@ employeesRouter
                 const numOfValues = Object.values(employeeToUpdate).filter(Boolean).length;
                 if (numOfValues === 0)
                     return (res.status(400).json({
-                        error: {
-                            message: `Request body must contain id, order_number, name, score, or location_id`
-                        }
+                        error: `Request body must contain id, order_number, name, score, or location_id`
                     }));
         
                 EmployeesService.updateEmployee(
