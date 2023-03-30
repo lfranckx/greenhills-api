@@ -105,7 +105,7 @@ employeesRouter
                     error: 'Username not found'
                 });
             
-            return AuthService.comparePasswords(password, dbUser.password)
+            return AuthService.comparePasswords(password, dbUser.manager_password)
             .then(compareMatch => {
                 if (!compareMatch)
                     return res.status(400).json({
