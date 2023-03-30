@@ -26,6 +26,8 @@ ticketsRouter
                 error: `Missing ${key} in request body`
             });
 
+        newTicket.date_created = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+
         // iterate over numOfTickets and insert newTicket each time
         const promises = [];
         for (let i = 0; i < numOfTickets; i++) {
