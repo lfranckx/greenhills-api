@@ -18,7 +18,6 @@ employeesRouter
     })
     .post(jsonParser, (req, res, next) => {
         const { name, location_id, score, password } = req.body;
-        console.log('req body...', req.body);
 
         const newEmployee = {
             name: name,
@@ -36,15 +35,13 @@ employeesRouter
                     message: 'Username not found'
                 });
 
-            console.log('dbUser...', dbUser);
             return AuthService.comparePasswords(password, dbUser.manager_password)
             .then(compareMatch => {
                 if (!compareMatch)
                     return res.status(400).json({
                         message: 'Incorrect password',
                     });
-                
-                console.log('compareMatch...', compareMatch);
+
                 for (const [key, value] of Object.entries(newEmployee))
                     if (value === null)
                         return res.status(400).json({
@@ -61,16 +58,10 @@ employeesRouter
                         .location(path.posix.join(req.originalUrl, `/${employee.id}`))
                         .json(EmployeesService.serializeEmployee(employee));
                 })
-                .catch(err => {
-                    console.error(err);
-                    next(err);
-                });
+                .catch(next);
             });
         })
-        .catch(err => {
-            console.error(err);
-            next(err);
-        });
+        .catch(next);
     });
 
 // get employees by location

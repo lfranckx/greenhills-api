@@ -21,7 +21,6 @@ const EmployeesService = {
             .first();
     },
     insertEmployee(db, newEmployee) {
-        console.log('employees-service.js insertEmployee()...', newEmployee);
         const uuid = require('uuid').v4();
         const employeeWithUuid = { ...newEmployee, uuid };
         return db
