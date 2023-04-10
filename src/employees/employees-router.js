@@ -61,10 +61,16 @@ employeesRouter
                         .location(path.posix.join(req.originalUrl, `/${employee.id}`))
                         .json(EmployeesService.serializeEmployee(employee));
                 })
-                .catch(next);
+                .catch(err => {
+                    console.error(err);
+                    next(err);
+                });
             });
         })
-        .catch(next);
+        .catch(err => {
+            console.error(err);
+            next(err);
+        });
     });
 
 // get employees by location
